@@ -3,7 +3,7 @@ import express from "express";
 import {
   transModel,
   validateTransections,
-} from "../Models/Transactions.model.js";
+} from "../Models/Transections.model.js";
 import Statements from "./Statements.router.js";
 
 const router = express.Router();

@@ -1,6 +1,6 @@
 import Auth from "../Middlewares/Auth.middleware.js";
 import express, { response } from "express";
-import { transModel } from "../Models/Transactions.model.js";
+import { transModel } from "../Models/Transections.model.js";
 import { UserModel } from "../Models/Users.model.js";
 const router = express.Router();
 
