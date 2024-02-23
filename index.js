@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import connectedToDB from "./config/db.js";
 import auth from "./Routers/Auth.router.js";
 import users from "./Routers/Users.router.js";
-import transections from "./Routers/Transactions.router.js";
+import transections from "./Routers/Transections.router.js";
 import statements from "./Routers/Statements.router.js";
 const app = express();
 const __filename = url.fileURLToPath(import.meta.url);
