@@ -19,14 +19,33 @@ const transectionsSchema = new mongoose.Schema(
       type: String,
     },
 
+    category: {
+      type: String,
+      enum: [
+        "Salary",
+        "Bonus",
+        "Gift",
+        "Investment",
+        "Food",
+        "Rent",
+        "Shopping",
+        "Transportation",
+        "Utilities",
+        "Others",
+      ],
+      required: true,
+    },
+
     description: {
       type: String,
       required: true,
     },
+
     amount: {
       type: Number,
       required: true,
     },
+
     date: {
       type: Date,
       default: Date.now,
@@ -35,17 +54,32 @@ const transectionsSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-function validateTransections(user) {
-  const userValidation = Joi.object({
+function validateTransections(transection) {
+  const transectionValidation = Joi.object({
     userID: Joi.string().required(),
     title: Joi.string().required(),
-    type: Joi.string().required(),
+    type: Joi.string().valid("Expense", "Income").required(),
+    category: Joi.string()
+      .valid(
+        "Salary",
+        "Bonus",
+        "Gift",
+        "Investment",
+        "Food",
+        "Rent",
+        "Shopping",
+        "Transportation",
+        "Utilities",
+        "Others"
+      )
+      .required(),
     description: Joi.string().required(),
     amount: Joi.number().required(),
-    date: Joi.string(),
+    date: Joi.date().iso(),
   });
-  return userValidation.validate(user);
+  return transectionValidation.validate(transection);
 }
+
 const transModel = mongoose.model("transection", transectionsSchema);
 
 export { transModel, validateTransections };
