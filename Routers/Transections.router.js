@@ -8,6 +8,8 @@ import Statements from "./Statements.router.js";
 
 const router = express.Router();
 
+router.use(Auth);
+
 router.get("/:id", async function (req, res) {
   try {
     let id = req.params.id;
@@ -58,9 +60,9 @@ router.post("/usertransactions", async function (req, res) {
     userID: req.body.userID,
     type: req.body.type,
     title: req.body.title,
+    category: req.body.category,
     description: req.body.description,
     amount: req.body.amount,
-    // date: req.body.date,
   });
   console.log(transInfo);
   //it comes from fucntion resturn it returns object;
