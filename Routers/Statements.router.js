@@ -72,6 +72,34 @@ router.get("/info/:id", async function (req, res) {
   }
 });
 
+// Route to get all user Income and Expense
+router.get("/userIncomeExpense/:id", async function (req, res) {
+  const userID = req.params.id;
+  try {
+    const userIncomeResult = await userIncome(userID);
+    const userExpenseResult = await userExpense(userID);
+
+    const allTransactions = {
+      income: userIncomeResult,
+      // expense can return empty array so instead of empty array it returns 0 return [{"category":"none","amount":0,"type":"Expense}] only if it is empty
+      expense: isEmpty(userExpenseResult)
+        ? [{ category: "", amount: 0, type: "Expense" }]
+        : userExpenseResult,
+    };
+
+    res.send({
+      status: 200,
+      message: "Successful",
+      allIncomeExpense: allTransactions,
+    });
+  } catch (e) {
+    res.send({
+      status: 500,
+      message: `Error: ${e}`,
+    });
+  }
+});
+
 // get user info by id
 const userInfo = async function (userID) {
   const user = await UserModel.findById(userID).select(
@@ -115,71 +143,103 @@ const userBalance = async function (userID) {
 // Calculate user Income using map function
 const userIncome = async function (userID) {
   const userIncome = await transModel.find({ userID: userID, type: "Income" });
-  const userTotalIncome = userIncome.map((user) => user.amount);
+  // filter user income with category and amount
+  const userTotalIncome = userIncome.map((user) => {
+    return {
+      category: user.category,
+      amount: user.amount,
+      type: user.type,
+    };
+  });
   return userTotalIncome;
 };
 
-// user Income
-router.get("/userIncome/:id", async function (req, res) {
-  const userID = req.params.id;
-  try {
-    const user_Income = await userIncome(userID);
-    if (isEmpty(user_Income)) {
-      res.send({
-        status: 200,
-        message: "this user does not have any income",
-        userIncome: [0],
-      });
-    } else {
-      res.send({
-        status: 200,
-        message: "Successfull",
-        userIncome: user_Income,
-      });
-    }
-  } catch (e) {
-    res.send({
-      status: 500,
-      message: `Error: ${e}`,
-    });
-  }
-});
+// // user Income
+// router.get("/userIncome/:id", async function (req, res) {
+//   const userID = req.params.id;
+//   try {
+//     const user_Income = await userIncome(userID);
+//     if (isEmpty(user_Income)) {
+//       res.send({
+//         status: 200,
+//         message: "this user does not have any income",
+//         userIncome: [0],
+//       });
+//     } else {
+//       res.send({
+//         status: 200,
+//         message: "Successfull",
+//         userIncome: user_Income,
+//       });
+//     }
+//   } catch (e) {
+//     res.send({
+//       status: 500,
+//       message: `Error: ${e}`,
+//     });
+//   }
+// });
 
 // Calculate user Expense using map function return array of user expense
+// const userExpense = async function (userID) {
+//   const userExpense = await transModel.find({
+//     userID: userID,
+//     type: "Expense",
+//   });
+//   const userTotalExpense = userExpense.map((user) => {
+//     return {
+//       category: user.category,
+//       // if amount is empty it returns 0
+//       amount: user.amount || 0,
+//       type: user.type,
+//     };
+//   });
+//   return userTotalExpense;
+// };
+
 const userExpense = async function (userID) {
   const userExpense = await transModel.find({
     userID: userID,
     type: "Expense",
   });
-  const userTotalExpense = userExpense.map((user) => user.amount);
+
+  const userTotalExpense = userExpense.map((user) => {
+    return {
+      category: user.category,
+      // if amount is empty it returns 0
+      amount: user.amount,
+      type: user.type,
+    };
+  });
+
   return userTotalExpense;
 };
 
 // user Expenses
-router.get("/userExpense/:id", async (req, res) => {
-  const userID = req.params.id;
-  try {
-    const user_Expense = await userExpense(userID);
-    if (isEmpty(user_Expense)) {
-      res.send({
-        status: 200,
-        message: "this user does not have any expense",
-        userExpense: [0],
-      });
-    } else {
-      res.send({
-        status: 200,
-        message: "Successfull",
-        userExpense: user_Expense,
-      });
-    }
-  } catch (e) {
-    res.send({
-      status: 500,
-      message: `Error: ${e}`,
-    });
-  }
-});
+// router.get("/userExpense/:id", async (req, res) => {
+//   const userID = req.params.id;
+//   try {
+//     const user_Expense = await userExpense(userID);
+//     if (isEmpty(user_Expense)) {
+//       res.send({
+//         status: 200,
+//         message: "this user does not have any expense",
+//         userExpense: [0],
+//       });
+//     } else {
+//       res.send({
+//         status: 200,
+//         message: "Successfull",
+//         userExpense: user_Expense,
+//       });
+//     }
+//   } catch (e) {
+//     res.send({
+//       status: 500,
+//       message: `Error: ${e}`,
+//     });
+//   }
+// });
 
 const Statements = { router, userBalance };
 
