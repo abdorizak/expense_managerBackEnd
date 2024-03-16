@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import connectedToDB from "./config/db.js";
 import auth from "./Routers/Auth.router.js";
 import users from "./Routers/Users.router.js";
-import transections from "./Routers/Transections.router.js";
+import transactions from "./Routers/Transactions.router.js";
 import statements from "./Routers/Statements.router.js";
 const app = express();
 const __filename = url.fileURLToPath(import.meta.url);
@@ -33,7 +33,7 @@ app.get("/api", function (req, res) {
 // routes
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/users", users);
-app.use("/api/v1/transactions", transections);
+app.use("/api/v1/transactions", transactions);
 app.use("/api/v1/statements", statements.router);
 statements.userBalance();
 // get user image with path => http://localhost:4400/uploads/IMG_42871662105881035.jpeg
