@@ -2,7 +2,7 @@ import Auth from "../Middlewares/Auth.middleware.js";
 import express from "express";
 import {
   transModel,
-  validateTransections,
+  validateTransactions,
 } from "../Models/Transections.model.js";
 import Statements from "./Statements.router.js";
 
@@ -53,7 +53,7 @@ router.get("/usertransactions/:userID/:Transtype", async function (req, res) {
 router.post("/usertransactions", async function (req, res) {
   // let body = {...req.body,t_name:req.body.name}
   // delete body.name
-  const { error } = validateTransections(req.body);
+  const { error } = validateTransactions(req.body);
   if (error) return res.status(400).send({ message: error.details[0].message });
 
   const transInfo = new transModel({
