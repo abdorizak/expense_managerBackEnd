@@ -1,6 +1,6 @@
 import Auth from "../Middlewares/Auth.middleware.js";
 import express, { response } from "express";
-import { transModel } from "../Models/Transections.model.js";
+import { transModel } from "../Models/Transactions.model.js";
 import { UserModel } from "../Models/Users.model.js";
 const router = express.Router();
 
@@ -11,7 +11,7 @@ function isEmpty(array) {
   return array.length == 0;
 }
 
-// get user transection by populating user and it transections
+// get user transaction by populating user and it transactions
 router.get("/:id", async function (req, res) {
   const userID = req.params.id;
   let data;

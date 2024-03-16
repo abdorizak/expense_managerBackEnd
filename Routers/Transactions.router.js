@@ -3,7 +3,7 @@ import express from "express";
 import {
   transModel,
   validateTransactions,
-} from "../Models/Transections.model.js";
+} from "../Models/Transactions.model.js";
 import Statements from "./Statements.router.js";
 
 const router = express.Router();
@@ -28,19 +28,19 @@ router.get("/:id", async function (req, res) {
     });
   }
 });
-// get user information by passing user id,and transection type expense or income
+// get user information by passing user id,and transaction type expense or income
 router.get("/usertransactions/:userID/:Transtype", async function (req, res) {
   try {
     let { userID, Transtype } = req.params;
     console.log(userID, Transtype);
-    let transection = await transModel.find({
+    let transaction = await transModel.find({
       userID: userID,
       type: Transtype,
     });
     res.send({
       status: 200,
       message: "Successfull",
-      transaction: transection,
+      transaction: transaction,
     });
   } catch (e) {
     res.send({
@@ -100,7 +100,7 @@ router.put("/usertransactions/:id", async (req, res) => {
   // if(!checkingID) return res.status(404).send("given id was not found");
   // const getTransaction = transModel.findById((c) => c._id === parseInt(id));
   // console.log(getTransaction)
-  // if (!getTransaction) res.status(404).send("The transections ID was not found");
+  // if (!getTransaction) res.status(404).send("The transactions ID was not found");
 
   const transInfo = {
     date: req.body.date,
