@@ -77,7 +77,7 @@ function validateTransactions(transaction) {
     amount: Joi.number().required(),
     date: Joi.date().iso(),
   });
-  return transactionValidation.validate(transection);
+  return transactionValidation.validate(transaction);
 }
 
 const transModel = mongoose.model("transactions", transactionsSchema);
