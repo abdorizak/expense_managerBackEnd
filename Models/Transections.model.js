@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import Joi from "joi";
 
-const transectionsSchema = new mongoose.Schema(
+const transactionsSchema = new mongoose.Schema(
   {
     userID: {
       type: mongoose.Schema.Types.ObjectId,
@@ -54,8 +54,8 @@ const transectionsSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-function validateTransections(transection) {
-  const transectionValidation = Joi.object({
+function validateTransactions(transaction) {
+  const transactionValidation = Joi.object({
     userID: Joi.string().required(),
     title: Joi.string().required(),
     type: Joi.string().valid("Expense", "Income").required(),
@@ -77,9 +77,9 @@ function validateTransections(transection) {
     amount: Joi.number().required(),
     date: Joi.date().iso(),
   });
-  return transectionValidation.validate(transection);
+  return transactionValidation.validate(transection);
 }
 
-const transModel = mongoose.model("transection", transectionsSchema);
+const transModel = mongoose.model("transactions", transactionsSchema);
 
-export { transModel, validateTransections };
+export { transModel, validateTransactions };
