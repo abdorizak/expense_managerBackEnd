@@ -3,6 +3,7 @@ import url from "url";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import userAgent from "express-useragent";
 import connectedToDB from "./config/db.js";
 import auth from "./Routers/Auth.router.js";
 import users from "./Routers/Users.router.js";
@@ -17,6 +18,7 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(userAgent.express());
 
 connectedToDB();
 
@@ -31,10 +33,15 @@ app.get("/api", function (req, res) {
     res.header["cf-connecting-ip"] ||
     req.headers["x-real-ip"] ||
     req.headers["x-forwarded-for"] ||
-    req.socket.remoteAddress;
+    req.socket.remoteAddress ||
+    "";
+
+  const requesterInfo = req.useragent;
+
   res.send({
     message: "Welcome to Express API",
     ip: ip,
+    requesterInfo: requesterInfo,
   });
 });
 
