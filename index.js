@@ -27,7 +27,15 @@ app.get("/", function (req, res) {
 });
 
 app.get("/api", function (req, res) {
-  res.send("Express API is running");
+  const ip =
+    res.header["cf-connecting-ip"] ||
+    req.headers["x-real-ip"] ||
+    req.headers["x-forwarded-for"] ||
+    req.socket.remoteAddress;
+  res.send({
+    message: "Welcome to Express API",
+    ip: ip,
+  });
 });
 
 // routes
